@@ -3,55 +3,179 @@ NAB
 
 Anomoly detection on NAB data
 
-Project Organization
-------------
 
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.testrun.org
+# D(St)reams of Anomalies
+
+Anomaly Detection Modeling - Project 4
+
+Submitted by: Mugdha Bajjuri
+
+The Numenta Anomaly Benchmark (NAB) is a novel benchmark for evaluating algorithms for anomaly detection in streaming, online applications. It is comprised of over 50 labeled real-world and artificial timeseries data files plus a novel scoring mechanism designed for real-time applications. All of the data and code is fully open-source, with extensive documentation, and a scoreboard of anomaly detection algorithms: github.com/numenta/NAB. 
 
 
---------
+Below Anomaly detecting models are applied on realKnownCause data ambient_temperature_system_failure.csv
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+
+### Distribution of temperature over the years
+
+
+![png](reports/output_6_1.png)
+
+
+### Feature Engineering
+
+Generated year, day and hour features from the timestamp data.
+
+day_of_week gives values 0 till 6
+
+Month and week number are also derived
+
+For generating the feature season -->  #dec - feb is winter, then spring, summer, fall etc
+0 -> winter(dec-feb) ; 1 -> Spring(mar-may) ; 2 -> Summer(jun-aug) ; 3 -> Fall(sep-nov) 
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>timestamp</th>
+      <th>value</th>
+      <th>timestamp1</th>
+      <th>year</th>
+      <th>day</th>
+      <th>hour</th>
+      <th>day_of_week</th>
+      <th>month</th>
+      <th>week_number</th>
+      <th>season</th>
+      <th>time_of_day</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2013-07-04 00:00:00</td>
+      <td>69.880835</td>
+      <td>2013-07-04 00:00:00</td>
+      <td>2013</td>
+      <td>4</td>
+      <td>0</td>
+      <td>3</td>
+      <td>7</td>
+      <td>27</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2013-07-04 01:00:00</td>
+      <td>71.220227</td>
+      <td>2013-07-04 01:00:00</td>
+      <td>2013</td>
+      <td>4</td>
+      <td>1</td>
+      <td>3</td>
+      <td>7</td>
+      <td>27</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2013-07-04 02:00:00</td>
+      <td>70.877805</td>
+      <td>2013-07-04 02:00:00</td>
+      <td>2013</td>
+      <td>4</td>
+      <td>2</td>
+      <td>3</td>
+      <td>7</td>
+      <td>27</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2013-07-04 03:00:00</td>
+      <td>68.959400</td>
+      <td>2013-07-04 03:00:00</td>
+      <td>2013</td>
+      <td>4</td>
+      <td>3</td>
+      <td>3</td>
+      <td>7</td>
+      <td>27</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2013-07-04 04:00:00</td>
+      <td>69.283551</td>
+      <td>2013-07-04 04:00:00</td>
+      <td>2013</td>
+      <td>4</td>
+      <td>4</td>
+      <td>3</td>
+      <td>7</td>
+      <td>27</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+## Modeling 
+### Isolation Forest
+
+
+
+    0    6903
+    1     364
+
+
+### Visualisation of anomalies
+
+
+![png](reports/output_20_0.png)
+
+
+#### visualisation of anomaly with temperature repartition
+
+
+![png](reports/output_22_0.png)
+
+
+## Anomoly Visualization in 3D
+
+![png](reports/output_24_0.png)
+
+
+## One class SVM
+
+
+    0    6389
+    1     878
+    Name: anomaly, dtype: int64
+
+
+## VIsualization in 3D
+
+
+![png](reports/output_28_0.png)
+
+
+#### Observation
+
+- It can be seen that One class SVM performed better over the Isolation forest
+- Also By observing the graphs it is evident that system failure happened on:
+    - First Anomoly might have happened on 2014 January 
+    - Second Anomoly might have happened on 2014-mid of April
+    - Third Anomoly might have happened on 2014 mid of may
+
