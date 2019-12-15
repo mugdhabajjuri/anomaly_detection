@@ -136,9 +136,9 @@ For generating the feature season -->  #dec - feb is winter, then spring, summer
 
 
 
-    0    6903
-    1     364
-
+    0    6903 Normal
+    1     364 Anomoly
+    Name: anomaly, dtype: int64
 
 ### Visualisation of anomalies
 
@@ -160,8 +160,8 @@ For generating the feature season -->  #dec - feb is winter, then spring, summer
 ## One class SVM
 
 
-    0    6389
-    1     878
+    0    6389 Normal
+    1     878 Anomoly
     Name: anomaly, dtype: int64
 
 
