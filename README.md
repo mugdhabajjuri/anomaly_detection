@@ -173,6 +173,13 @@ For generating the feature season -->  #dec - feb is winter, then spring, summer
 
 #### Observation
 
+- Below are the count of anomalies for both the methods.
+
+| Type             | Normal | Anomaly |
+|------------------|--------|---------|
+| Isolation Forest | 6903   | 364     |
+| Once Class SVM   | 6389   | 878     |
+
 - It can be seen that One class SVM performed better over the Isolation forest
 - Also By observing the graphs it is evident that system failure happened on:
     - First Anomoly might have happened on 2014 January 
